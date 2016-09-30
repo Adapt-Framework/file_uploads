@@ -35,6 +35,7 @@ namespace adapt\file_uploads{
                             if ($file_meta['error'] == UPLOAD_ERR_OK){
                                 $file_key = 'file_uploads' . base64_encode(guid());
                                 $this->file_store->set_by_file($file_key, $file_meta['tmp_name'], $file_meta['type']);
+                                $this->file_store->set_meta_data($file_key, 'filename', $file_meta['name']);
                                 
                                 $storage_errors = $this->file_store->errors(true);
                                 
