@@ -11,6 +11,11 @@ namespace adapt\file_uploads{
             parent::__construct();
         }
         
+        public function view_default(){
+            $this->content_type = "application/json";
+            return json_encode($this->response);
+        }
+        
         // This controller is not mounted by default and so file uploads
         // are disabled. This controller has no permissions or
         // restrictions on uploading.
@@ -33,7 +38,7 @@ namespace adapt\file_uploads{
                             }
                         }else{
                             if ($file_meta['error'] == UPLOAD_ERR_OK){
-                                $file_key = 'file_uploads' . base64_encode(guid());
+                                $file_key = 'file_uploads/' . base64_encode(guid());
                                 $this->file_store->set_by_file($file_key, $file_meta['tmp_name'], $file_meta['type']);
                                 $this->file_store->set_meta_data($file_key, 'filename', $file_meta['name']);
                                 
@@ -81,9 +86,9 @@ namespace adapt\file_uploads{
             }
             $raw_data = @file_get_contents('php://input');
             
-            if (is_json($raw_data)){
-                $file_key = 'file_uploads' . base64_encode(guid());
-                $this->file_store->set_by_file($file_key, $raw_data, $content_type);
+            if ($raw_data){
+                $file_key = 'file_uploads/' . base64_encode(guid());
+                $this->file_store->set($file_key, $raw_data, $content_type);
                 
                 $storage_errors = $this->file_store->errors(true);
                 
