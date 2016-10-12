@@ -46,7 +46,7 @@ namespace adapt\file_uploads{
                                     
                                     $this->respond('file_upload', [$field_name => ['status' => 'success', 'file_key' => $file_key]]);
                                 }else{
-                                    $this->respond('file_upload', [$field_name => ['status' => 'failed', 'errors' => $errors]]);
+                                    $this->respond('file_upload', [$field_name => ['status' => 'failed', 'errors' => $storage_errors]]);
                                 }
                             }else{
                                 switch($file_meta['error']){
@@ -94,7 +94,7 @@ namespace adapt\file_uploads{
                     
                     $this->respond('raw_file_upload', ['status' => 'success', 'file_key' => $file_key]);
                 }else{
-                    $this->respond('raw_file_upload', ['status' => 'failed', 'errors' => $errors]);
+                    $this->respond('raw_file_upload', ['status' => 'failed', 'errors' => $storage_errors]);
                 }
             }else{
                 $this->respond('raw_file_upload', ['status' => 'failed', 'errors' => 'No file uploaded']);
