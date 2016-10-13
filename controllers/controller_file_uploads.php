@@ -82,7 +82,7 @@ namespace adapt\file_uploads{
             $raw_data = @file_get_contents('php://input');
             
             if ($raw_data){
-                $file_key = 'file_uploads/' . base64_encode(guid());
+                $file_key = 'file_uploads/' . guid();
                 $this->file_store->set($file_key, $raw_data, $content_type);
                 
                 $storage_errors = $this->file_store->errors(true);
