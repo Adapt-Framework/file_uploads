@@ -70,7 +70,6 @@ namespace adapt\file_uploads{
                         }
                     }
                 }
-                
             }
         }
         
@@ -92,16 +91,13 @@ namespace adapt\file_uploads{
                     $request['raw_file_upload_key'] = $file_key;
                     $this->store('adapt.request', $request);
                     
-                    $this->respond('raw_file_upload', ['status' => 'success', 'file_key' => $file_key]);
+                    $this->respond('raw_file_upload', ['status' => 200, 'file_key' => $file_key]);
                 }else{
-                    $this->respond('raw_file_upload', ['status' => 'failed', 'errors' => $storage_errors]);
+                    $this->respond('raw_file_upload', ['status' => 500, 'errors' => $storage_errors]);
                 }
             }else{
-                $this->respond('raw_file_upload', ['status' => 'failed', 'errors' => 'No file uploaded']);
+                $this->respond('raw_file_upload', ['status' => 500, 'errors' => 'No file uploaded']);
             }
         }
-        
     }
 }
-
-?>
