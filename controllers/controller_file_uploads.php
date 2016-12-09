@@ -78,11 +78,14 @@ namespace adapt\file_uploads{
             if (isset($_SERVER['CONTENT_TYPE'])){
                 list($content_type, $charset) = explode(";", $_SERVER['CONTENT_TYPE']);
             }
+            
             $raw_data = @file_get_contents('php://input');
             
             if ($raw_data){
                 $file_key = 'file_uploads/' . guid();
                 $this->file_store->set($file_key, $raw_data, $content_type);
+                $path = $this->file_store->write_to_file($file_key);
+                $content_type = mime_content_type($path);
                 
                 $storage_errors = $this->file_store->errors(true);
                 
