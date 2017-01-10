@@ -5,6 +5,8 @@
         <description>Uploads files and stores them in the file store</description>
         <name>file_uploads</name>
         <namespace>\adapt\file_uploads</namespace>
+        <version_status>release</version_status>
+        <availability>public</availability>
         <version>1.0.0</version>
         <type>extensions</type>
         <copyright>2016 Adapt Framework</copyright>
