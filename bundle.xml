@@ -8,7 +8,7 @@
         <version_status>release</version_status>
         <availability>public</availability>
         <version>1.0.0</version>
-        <type>extensions</type>
+        <type>extension</type>
         <copyright>2016 Adapt Framework</copyright>
         <license>MIT</license>
         <website>http://www.adaptframework.com/documentation/adapt/file_uploads</website>
