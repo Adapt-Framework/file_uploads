@@ -78,28 +78,47 @@ namespace adapt\file_uploads{
             if (isset($_SERVER['CONTENT_TYPE'])){
                 list($content_type, $charset) = explode(";", $_SERVER['CONTENT_TYPE']);
             }
+
+            $ifp = @fopen("php://input", "rb");
+            $temp_path = TEMP_PATH . guid();
+            $ofp = @fopen($temp_path, "wb");
             
-            $raw_data = @file_get_contents('php://input');
-            
-            if ($raw_data){
-                $file_key = 'file_uploads/' . guid();
-                $this->file_store->set($file_key, $raw_data, $content_type);
-                $path = $this->file_store->write_to_file($file_key);
-                $content_type = mime_content_type($path);
-                
-                $storage_errors = $this->file_store->errors(true);
-                
-                if (!count($storage_errors)){
-                    $request = $this->store('adapt.request') ?: [];
-                    $request['raw_file_upload_key'] = $file_key;
-                    $this->store('adapt.request', $request);
-                    
-                    $this->respond('raw_file_upload', ['status' => 200, 'file_key' => $file_key]);
-                }else{
-                    $this->respond('raw_file_upload', ['status' => 500, 'errors' => $storage_errors]);
+            if (!($ifp && $ofp)){
+                $this->respond('raw_file_upload', ['status' => 400, 'errors' => 'No file uploaded']);
+                return;
+            }
+             
+            while(!feof($ifp)){
+                fwrite($ofp, fread($ifp, 1024 * 1024));
+            }
+
+            fclose($ifp);
+            fclose($ofp);
+            $mime_type = mime_content_type($temp_path);
+
+            if($this->setting('file_uploads.mime_restriction') == 'Yes'){
+                $allowed_mime_types = $this->setting('file_uploads.mime_types');
+                if (!in_array($mime_type, $allowed_mime_types)){
+                    $this->respond('raw_file_upload', ['status' => 418, 'errors' => 'File Type is not supported']);
+                    unlink($temp_path);
+                    return;
                 }
+            }
+
+            $file_key = 'file_uploads/' . guid();
+            $this->file_store->set_by_file($file_key, $temp_path, $mime_type);
+            unlink($temp_path);
+
+            $storage_errors = $this->file_store->errors(true);
+
+            if (!count($storage_errors)){
+                $request = $this->store('adapt.request') ?: [];
+                $request['raw_file_upload_key'] = $file_key;
+                $this->store('adapt.request', $request);
+
+                $this->respond('raw_file_upload', ['status' => 200, 'file_key' => $file_key]);
             }else{
-                $this->respond('raw_file_upload', ['status' => 500, 'errors' => 'No file uploaded']);
+                $this->respond('raw_file_upload', ['status' => 500, 'errors' => $storage_errors]);
             }
         }
     }

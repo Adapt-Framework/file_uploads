@@ -22,5 +22,25 @@
                 <version>2.0</version>
             </bundle>
         </depends_on>
+        <settings>
+            <category name="file upload settings">
+                <setting>
+                    <name>file_uploads.mime_restriction</name>
+                    <label>Restrict file upload by mime type</label>
+                    <default_value>No</default_value>
+                    <allowed_values>
+                        <value>Yes</value>
+                        <value>No</value>
+                    </allowed_values>
+                </setting>
+                <setting>
+                    <name>file_uploads.mime_types</name>
+                    <label>mime types</label>
+                    <default_values>
+                        <value>text/plain</value>
+                    </default_values>
+                </setting>
+            </category>
+        </settings>
     </bundle>
 </adapt_framework>
