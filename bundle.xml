@@ -9,9 +9,12 @@
         <availability>public</availability>
         <version>0.9.0</version>
         <type>extension</type>
-        <copyright>2016 Adapt Framework</copyright>
+        <copyright>2017 Matt Bruton</copyright>
         <license>MIT</license>
-        <website>http://www.adaptframework.com/documentation/adapt/file_uploads</website>
+        <vendor>
+            <name>Adapt Framework</name>
+            <website>https://www.adaptframework.com</website>
+        </vendor>
         <author>
             <name>Matt Bruton</name>
             <email>matt.bruton@gmail.com</email>
