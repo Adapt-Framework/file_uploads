@@ -107,6 +107,7 @@ namespace adapt\file_uploads{
 
             $file_key = 'file_uploads/' . guid();
             $this->file_store->set_by_file($file_key, $temp_path, $mime_type);
+            $this->file_store->set_meta_data($file_key, 'filename', $this->request['file_name']);
             unlink($temp_path);
 
             $storage_errors = $this->file_store->errors(true);
